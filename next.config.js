@@ -1,4 +1,11 @@
 /** @type {import('next').NextConfig} */
-module.exports = {
-  reactStrictMode: true,
-}
+const withTm = require("next-transpile-modules")([
+  "ol-ext"
+]);
+const compose = require("next-compose");
+module.exports = compose([
+  [withTm],
+  {
+    reactStrictMode: true,
+  }
+])
