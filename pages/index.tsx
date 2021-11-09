@@ -24,7 +24,7 @@ import { fromLonLat } from 'ol/proj';
 const Home: NextPage = () => {
   useEffect((): any => {
     const mapSource = new OlSourceVector();
-    const mapVector = new OlLayerVector({
+    const mapVector: any = new OlLayerVector({
         source: mapSource,
         zIndex: 99
     });
@@ -43,8 +43,10 @@ const Home: NextPage = () => {
       })
     });
 
+    const sockClient: any = SocketIOClient;
+
     // connect to socket server
-    const socket = SocketIOClient.connect(process.env.BASE_URL, {
+    const socket = sockClient.connect(process.env.BASE_URL, {
       path: "/api/socketio",
     });
 
@@ -57,7 +59,7 @@ const Home: NextPage = () => {
     socket.on("message", (message: any) => {
       message.forEach((bus: any) => {
         const coord = fromLonLat([bus.BusPosition.PositionLon, bus.BusPosition.PositionLat]);
-        const busFeature = mapSource.getFeatureById(bus.PlateNumb);
+        const busFeature: any = mapSource.getFeatureById(bus.PlateNumb);
         if (busFeature) {
           // busFeature.getGeometry()!.setCoordinates(coord);
           const prevCoord = busFeature.getGeometry()!.getCoordinates();
@@ -80,7 +82,7 @@ const Home: NextPage = () => {
           feature.setStyle(new OlStyleStyle({
             image: new OlStyleIcon({
               src: './images/car.png',
-              scale: 0.05,
+              scale: 0.03,
               rotateWithView: true,
               rotation: bus.Azimuth * Math.PI / 180
             })
